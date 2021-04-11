@@ -157,7 +157,7 @@ public class debateManager : NetworkBehaviour
         {
             if (mode == 0)
             {
-                if (mainScript.allPlayers > 1) // should be > 1 but testing rn
+                if (mainScript.allPlayers > -1) // should be > 1 but testing rn
                 {
                     nextMode();
                 }
