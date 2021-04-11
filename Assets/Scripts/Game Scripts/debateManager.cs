@@ -25,10 +25,10 @@ public class debateManager : NetworkBehaviour
 
     List<intermissionMode> modes = new List<intermissionMode> { 
         new intermissionMode { message  = "Waiting For Players", timer = 600 },
-        new intermissionMode { message  = "Preperation", timer = 15 },
-        new intermissionMode { message  = "Debater 1", timer = 30 },
-        new intermissionMode { message  = "Intermission", timer = 10 },
-        new intermissionMode { message  = "Debater 2", timer = 30 },
+        new intermissionMode { message  = "Preparation ", timer = 15 },
+        new intermissionMode { message  = "Debater 1", timer = 60 },
+        new intermissionMode { message  = "Intermission", timer = 15 },
+        new intermissionMode { message  = "Debater 2", timer = 60 },
         new intermissionMode { message  = "Debate Conclusion", timer = 5 }
     };
 
