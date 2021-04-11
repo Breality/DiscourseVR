@@ -31,7 +31,7 @@ public class localSpectator : NetworkBehaviour
             comms.IsMuted = true;
             chatManager.enabled = true;
             camMove.enabled = true;
-            canvas.SetActive(true);
+            //canvas.SetActive(true);
         }
     }
 
