@@ -32,7 +32,7 @@ public class ChatMan : MonoBehaviour
         }
     }
 
-    public void makeNewChat(List<Message> messages)
+    public void makeNewChat(Message[] messages)
     {
         foreach(Transform child in contentParent.transform)
         {

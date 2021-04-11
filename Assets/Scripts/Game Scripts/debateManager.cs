@@ -47,7 +47,7 @@ public class debateManager : NetworkBehaviour
             {
                 totalTimeSpent = 0;
                 historyLogs = new List<Message> { };
-                getNewList(historyLogs);
+                getNewList(historyLogs.ToArray());
             }
         }
     }
@@ -84,12 +84,13 @@ public class debateManager : NetworkBehaviour
         Message newMessage = new Message { text = message, timestamp = timeShown, spectator = connectID };
         historyLogs.Add(newMessage);
 
-        Debug.Log(historyLogs);
-        getNewList(historyLogs);
+        Message[] items = historyLogs.ToArray();
+        Debug.Log(items);
+        getNewList(items);
     }
 
     [ClientRpc]
-    public void getNewList(List<Message> newLogs)
+    public void getNewList(Message[] newLogs)
     {
         string itemName = "Cube(Clone)";
         foreach (GameObject item in SceneManager.GetActiveScene().GetRootGameObjects()) // check to see if we are a spectator
