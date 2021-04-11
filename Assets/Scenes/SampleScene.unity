@@ -413,10 +413,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   networkManager: {fileID: 706709561}
-  ip: 192.168.2.104
+  ip: 192.168.2.15
   Server_Only: 0
-  Host_VR: 1
-  Host_Spectate: 0
+  Host_VR: 0
+  Host_Spectate: 1
   Host_Camera: 0
   Client_Camera: 0
   Client_Web: 0
@@ -527,7 +527,7 @@ MonoBehaviour:
   offlineScene: 
   onlineScene: 
   transport: {fileID: 706709563}
-  networkAddress: 192.168.2.104
+  networkAddress: 192.168.2.15
   maxConnections: 100
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60

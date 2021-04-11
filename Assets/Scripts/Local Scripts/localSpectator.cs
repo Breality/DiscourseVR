@@ -46,7 +46,7 @@ public class localSpectator : NetworkBehaviour
 
     public void sendMessage(string message)
     {
-        Debug.Log("Message 1782 " + message);
+        Debug.Log("Message 1785752 " + message);
         registerMessage(message);
     }
 
