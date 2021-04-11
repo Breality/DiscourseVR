@@ -2400,6 +2400,7 @@ MonoBehaviour:
   camera: {fileID: 6399717244471768655}
   chatManager: {fileID: 6476124137272728097}
   canvas: {fileID: 1202151339403856701}
+  camMove: {fileID: 4554165929426752784}
 --- !u!135 &6233124920224882153
 SphereCollider:
   m_ObjectHideFlags: 0
