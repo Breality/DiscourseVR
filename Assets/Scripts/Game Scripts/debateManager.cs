@@ -77,14 +77,14 @@ public class debateManager : NetworkBehaviour
         }
 
         int connectID = spectatorIDs[sender];
-        //Debug.Log(message);
-        //Debug.Log(timeShown);
-        //Debug.Log(connectID);
+        Debug.Log(message);
+        Debug.Log(timeShown);
+        Debug.Log(connectID);
 
         Message newMessage = new Message { text = message, timestamp = timeShown, spectator = connectID };
         historyLogs.Add(newMessage);
 
-        //Debug.Log(historyLogs);
+        Debug.Log(historyLogs);
         getNewList(historyLogs);
     }
 
