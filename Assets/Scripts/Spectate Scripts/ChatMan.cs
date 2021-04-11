@@ -12,6 +12,8 @@ public struct Message
 }
 public class ChatMan : MonoBehaviour
 {
+    public localSpectator networkedScript;
+
     // Start is called before the first frame update
     public GameObject iField;
     public GameObject contentParent;
@@ -25,7 +27,7 @@ public class ChatMan : MonoBehaviour
         string message = iField.GetComponent<TMP_InputField>().text;
         if (message != "" && Input.GetKeyUp(KeyCode.Return))
         {
-            Debug.Log(message);
+            networkedScript.sendMessage(message);
             iField.GetComponent<TMP_InputField>().text = "";
         }
     }

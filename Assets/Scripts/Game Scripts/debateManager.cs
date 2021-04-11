@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Mirror;
 
 public struct intermissionMode
@@ -11,9 +12,12 @@ public struct intermissionMode
 
 public class debateManager : NetworkBehaviour
 {
+    public Dictionary<GameObject, int> spectatorIDs = new Dictionary<GameObject, int> { };
     public PlayerOveride mainScript;
     public SyncText textSync;
 
+    List<Message> historyLogs = new List<Message> { };
+    float totalTimeSpent = 0;
     float timeSpent = 0;
     int mode = 0;
 
@@ -31,6 +35,7 @@ public class debateManager : NetworkBehaviour
         Debug.Log("Switching modes");
         mode = (mode + 1) % 6;
         timeSpent = 0; //Time.unscaledTime;
+        
         textSync.countdown = modes[mode].timer;
         textSync.stringMode = modes[mode].message;
 
@@ -38,6 +43,12 @@ public class debateManager : NetworkBehaviour
         {
             Debug.Log("Start or end recording client");
             RpcAutomateCamera(mode == 2);
+            if (mode == 2)
+            {
+                totalTimeSpent = timeSpent;
+                historyLogs = new List<Message> { };
+                getNewList(historyLogs);
+            }
         }
     }
 
@@ -52,6 +63,37 @@ public class debateManager : NetworkBehaviour
             Debug.Log("Got the request");
             localCamera direct_script = recorderCamera.GetComponent<localCamera>();
             direct_script.AutomateCamera(mode);
+        }
+    }
+
+
+    public void RegisterMessage(GameObject sender, string message)
+    {
+        string timeShown = "0" + (totalTimeSpent / 60).ToString() + ":" + ((totalTimeSpent % 60) < 10 ? "0" : "") + (totalTimeSpent % 60).ToString();
+        if (!spectatorIDs.ContainsKey(sender))
+        {
+            Debug.Log("No key????");
+            return;
+        }
+
+        int connectID = spectatorIDs[sender];
+        Message newMessage = new Message { text = message, timestamp = timeShown, spectator = connectID };
+        historyLogs.Add(newMessage);
+
+        getNewList(historyLogs);
+    }
+
+    [ClientRpc]
+    public void getNewList(List<Message> newLogs)
+    {
+        string itemName = "Cube(Clone)";
+        foreach (GameObject item in SceneManager.GetActiveScene().GetRootGameObjects()) // check to see if we are a spectator
+        {
+            if (item.name == itemName && item.transform.Find("Camera").gameObject.GetComponent<Camera>().enabled)
+            {
+                localSpectator localScript = item.GetComponent<localSpectator>();
+                localScript.chatManager.makeNewChat(newLogs);
+            }
         }
     }
 
@@ -76,6 +118,7 @@ public class debateManager : NetworkBehaviour
             else
             {
                 timeSpent += Time.deltaTime;
+                totalTimeSpent += Time.deltaTime;
                 int remaining = modes[mode].timer - (int)timeSpent;
                 if (remaining < 0)
                 {

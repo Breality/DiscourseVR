@@ -14,6 +14,7 @@ public class PlayerOveride : NetworkManager
     public GameObject spectator;
     public GameObject recorder;
     public GameObject spawnLocations;
+    public debateManager debateHandler;
 
     string wantedMode;
     public void setMode(string wanted)
@@ -73,5 +74,6 @@ public class PlayerOveride : NetworkManager
 
         // call this to use this gameobject as the primary controller
         NetworkServer.AddPlayerForConnection(conn, gameobject);
+        debateHandler.spectatorIDs.Add(gameobject, spectators);
     }
 }

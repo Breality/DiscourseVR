@@ -450,6 +450,7 @@ MonoBehaviour:
   recorder: {fileID: 2358284828920617435, guid: d2d95d000dd7f3145a89c12d6f979a7c,
     type: 3}
   spawnLocations: {fileID: 6754773747079941934}
+  debateHandler: {fileID: 816750922}
   players: 0
   spectators: 0
   allPlayers: 0
