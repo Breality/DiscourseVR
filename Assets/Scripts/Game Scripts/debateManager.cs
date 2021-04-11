@@ -45,7 +45,7 @@ public class debateManager : NetworkBehaviour
             RpcAutomateCamera(mode == 2);
             if (mode == 2)
             {
-                totalTimeSpent = timeSpent;
+                totalTimeSpent = 0;
                 historyLogs = new List<Message> { };
                 getNewList(historyLogs);
             }
@@ -69,7 +69,7 @@ public class debateManager : NetworkBehaviour
 
     public void RegisterMessage(GameObject sender, string message)
     {
-        string timeShown = "0" + (totalTimeSpent / 60).ToString() + ":" + ((totalTimeSpent % 60) < 10 ? "0" : "") + (totalTimeSpent % 60).ToString();
+        string timeShown = "0" + ((int)totalTimeSpent / 60).ToString() + ":" + (((int)totalTimeSpent % 60) < 10 ? "0" : "") + ((int)totalTimeSpent % 60).ToString();
         if (!spectatorIDs.ContainsKey(sender))
         {
             Debug.Log("No key????");
@@ -124,6 +124,7 @@ public class debateManager : NetworkBehaviour
             {
                 timeSpent += Time.deltaTime;
                 totalTimeSpent += Time.deltaTime;
+
                 int remaining = modes[mode].timer - (int)timeSpent;
                 if (remaining < 0)
                 {
