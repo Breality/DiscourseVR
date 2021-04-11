@@ -46,12 +46,14 @@ public class localSpectator : NetworkBehaviour
 
     public void sendMessage(string message)
     {
+        Debug.Log(message);
         registerMessage(message);
     }
 
     [Command]
     void registerMessage(string message)
     {
+        Debug.Log("Recieved " + message);
         mainManager.RegisterMessage(this.gameObject, message);
     }
 }
