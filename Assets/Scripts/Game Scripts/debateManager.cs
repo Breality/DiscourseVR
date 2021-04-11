@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mirror;
+using System.IO;
 
 public struct intermissionMode
 {
@@ -15,6 +16,7 @@ public class debateManager : NetworkBehaviour
     public Dictionary<GameObject, int> spectatorIDs = new Dictionary<GameObject, int> { };
     public PlayerOveride mainScript;
     public SyncText textSync;
+    public string filePath;
 
     List<Message> historyLogs = new List<Message> { };
     float totalTimeSpent = 0;
@@ -23,13 +25,14 @@ public class debateManager : NetworkBehaviour
 
     List<intermissionMode> modes = new List<intermissionMode> { 
         new intermissionMode { message  = "Waiting For Players", timer = 600 },
-        new intermissionMode { message  = "Preperation", timer = 20 },
-        new intermissionMode { message  = "Debater 1", timer = 60 },
-        new intermissionMode { message  = "Intermission", timer = 15 },
-        new intermissionMode { message  = "Debater 2", timer = 60 },
-        new intermissionMode { message  = "Debate Conclusion", timer = 5 }
+        new intermissionMode { message  = "Preperation", timer = 5 },
+        new intermissionMode { message  = "Debater 1", timer = 1 },
+        new intermissionMode { message  = "Intermission", timer = 1 },
+        new intermissionMode { message  = "Debater 2", timer = 1 },
+        new intermissionMode { message  = "Debate Conclusion", timer = 1 }
     };
-    
+
+    private List<Message> hiddenHistory;
     void nextMode()
     {
         Debug.Log("Switching modes");
@@ -42,13 +45,23 @@ public class debateManager : NetworkBehaviour
         if (mode == 2 || mode == 0) // start recording here
         {
             Debug.Log("Start or end recording client");
-            RpcAutomateCamera(mode == 2);
+
             if (mode == 2)
             {
                 totalTimeSpent = 0;
-                historyLogs = new List<Message> { };
-                getNewList(historyLogs.ToArray());
             }
+            else // print history logs
+            {
+                hiddenHistory = new List<Message> {
+                new Message { spectator = 1, text = "testing first line haha", timestamp = "00:05"},
+                new Message { spectator = 1, text = "testing second line haha", timestamp = "00:35"},
+                new Message { spectator = 2, text = "testing third line with second spectator haha", timestamp = "01:25"}
+                };
+            }
+
+            RpcAutomateCamera(mode == 2);
+            historyLogs = new List<Message> { };
+            getNewList(historyLogs.ToArray());
         }
     }
 
@@ -77,15 +90,10 @@ public class debateManager : NetworkBehaviour
         }
 
         int connectID = spectatorIDs[sender];
-        Debug.Log(message);
-        Debug.Log(timeShown);
-        Debug.Log(connectID);
-
         Message newMessage = new Message { text = message, timestamp = timeShown, spectator = connectID };
         historyLogs.Add(newMessage);
 
         Message[] items = historyLogs.ToArray();
-        Debug.Log(items);
         getNewList(items);
     }
 
@@ -103,10 +111,46 @@ public class debateManager : NetworkBehaviour
         }
     }
 
+    public void RegisterFileName(string extra)
+    {
+        createFile(extra);
+        Debug.Log("Sent request to make file with " + extra);
+    }
+
+    [Command(requiresAuthority = false)]
+    void createFile(string naming)
+    {
+        int count = hiddenHistory.Count;
+        Debug.Log("Will now create " + naming + " file for " + count + " messages");
+        string fullPath = filePath + naming.Replace(".mp4", ".json");
+
+        StreamWriter writer = new StreamWriter(fullPath, true);
+
+        writer.WriteLine("[");
+        int i = 0;
+        foreach (Message m in hiddenHistory)
+        {
+            i++;
+            writer.WriteLine("{");
+
+            writer.WriteLine("\"sender\" : " + m.spectator.ToString() + ",");
+            int seconds = int.Parse(m.timestamp.Substring(0, 2)) * 60 + int.Parse(m.timestamp.Substring(3, 2));
+            writer.WriteLine("\"timestamp\" : " + seconds.ToString() + ",");
+            writer.WriteLine("\"message\" : \"" + System.Net.WebUtility.HtmlEncode(m.text) + "\"");
+
+            writer.WriteLine("}" + (i < count ? "," : "") );
+        }
+        writer.WriteLine("]");
+
+
+        writer.Close();
+
+        Debug.Log("Finished making folder!");
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -116,7 +160,7 @@ public class debateManager : NetworkBehaviour
         {
             if (mode == 0)
             {
-                if (mainScript.allPlayers > 1) // should be > 1 but testing rn
+                if (mainScript.allPlayers > -1) // should be > 1 but testing rn
                 {
                     nextMode();
                 }

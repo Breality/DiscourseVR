@@ -89,6 +89,10 @@ namespace RockVR.Video
         /// </summary>
         /// <value>The current status.</value>
         public VideoCaptureCtrl.StatusType status { get; set; }
+
+        public GameObject managerObject;
+        public debateManager mainManager;
+
         /// <summary>
         /// Setup Time.maximumDeltaTime to avoiding nasty stuttering.
         /// https://docs.unity3d.com/ScriptReference/Time-maximumDeltaTime.html
@@ -172,6 +176,13 @@ namespace RockVR.Video
                 VideoCaptureLib_Clean(libAPI);
             }
         }
+
+        void Start()
+        {
+            managerObject = GameObject.Find("/DebateManager");
+            mainManager = managerObject.GetComponent<debateManager>();
+        }
+
         /// <summary>
         /// Start capture video.
         /// </summary>
@@ -714,6 +725,9 @@ namespace RockVR.Video
         #endregion // Dll Import
     }
 
+    
+    
+
     /// <summary>
     /// <c>VideoMuxing</c> is processed after temp video captured, with or without
     /// temp audio captured. If audio captured, it will mux the video and audio
@@ -746,10 +760,17 @@ namespace RockVR.Video
         /// <summary>
         /// Video/Audio mux function impl.
         /// Blocking function.
+        /// 
+
+        
+
         /// </summary>
         public bool Muxing()
         {
-            filePath = PathConfig.SaveFolder + StringUtils.GetMp4FileName("");
+            string bonusAdd = StringUtils.GetMp4FileName("");
+            filePath = PathConfig.SaveFolder + bonusAdd;
+            videoCapture.mainManager.RegisterFileName(bonusAdd);
+
             System.IntPtr libAPI = MuxingLib_Get(
                 videoCapture.bitrate,
                 filePath,
@@ -780,6 +801,8 @@ namespace RockVR.Video
             {
                 Debug.Log("[VideoMuxing::Muxing] Mux process finish!");
             }
+
+
             return true;
         }
 

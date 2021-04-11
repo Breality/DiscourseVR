@@ -321,7 +321,7 @@ MonoBehaviour:
   Server_Only: 0
   Host_VR: 0
   Host_Spectate: 0
-  Host_Camera: 0
+  Host_Camera: 1
   Client_Camera: 0
   Client_Web: 0
   Client_VR: 1
@@ -488,6 +488,7 @@ MonoBehaviour:
   syncInterval: 0.1
   mainScript: {fileID: 706709566}
   textSync: {fileID: 4718587186193095871}
+  filePath: Assets/Files/
 --- !u!4 &816750923
 Transform:
   m_ObjectHideFlags: 0

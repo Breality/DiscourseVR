@@ -190,7 +190,15 @@ namespace Mirror
                 if (messageHandlers.TryGetValue(msgType, out NetworkMessageDelegate msgDelegate))
                 {
                     msgDelegate.Invoke(this, reader, channelId);
-                    lastMessageTime = Time.time;
+                    try
+                    {
+
+                        lastMessageTime = Time.time;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.Log("It tried dying again");
+                    }
                     return true;
                 }
                 else
