@@ -9,6 +9,8 @@ public class localSpectator : NetworkBehaviour
     public GameObject rig;
     public GameObject camera;
     public ChatMan chatManager;
+    public GameObject canvas;
+
     debateManager mainManager;
 
     // Start is called before the first frame update
@@ -27,6 +29,7 @@ public class localSpectator : NetworkBehaviour
             DissonanceComms comms = dissonance.GetComponent<DissonanceComms>();
             comms.IsMuted = true;
             chatManager.enabled = true;
+            canvas.SetActive(true);
         }
     }
 
