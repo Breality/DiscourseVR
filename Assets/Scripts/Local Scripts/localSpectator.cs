@@ -10,6 +10,7 @@ public class localSpectator : NetworkBehaviour
     public GameObject camera;
     public ChatMan chatManager;
     public GameObject canvas;
+    public CamController camMove;
 
     debateManager mainManager;
 
@@ -29,6 +30,7 @@ public class localSpectator : NetworkBehaviour
             DissonanceComms comms = dissonance.GetComponent<DissonanceComms>();
             comms.IsMuted = true;
             chatManager.enabled = true;
+            camMove.enabled = true;
             canvas.SetActive(true);
         }
     }
