@@ -324,7 +324,7 @@ MonoBehaviour:
   Host_Camera: 1
   Client_Camera: 0
   Client_Web: 0
-  Client_VR: 1
+  Client_VR: 0
 --- !u!4 &636595771
 Transform:
   m_ObjectHideFlags: 0

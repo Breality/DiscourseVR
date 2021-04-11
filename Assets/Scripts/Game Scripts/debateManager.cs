@@ -25,11 +25,11 @@ public class debateManager : NetworkBehaviour
 
     List<intermissionMode> modes = new List<intermissionMode> { 
         new intermissionMode { message  = "Waiting For Players", timer = 600 },
-        new intermissionMode { message  = "Preperation", timer = 5 },
-        new intermissionMode { message  = "Debater 1", timer = 1 },
-        new intermissionMode { message  = "Intermission", timer = 1 },
-        new intermissionMode { message  = "Debater 2", timer = 1 },
-        new intermissionMode { message  = "Debate Conclusion", timer = 1 }
+        new intermissionMode { message  = "Preperation", timer = 15 },
+        new intermissionMode { message  = "Debater 1", timer = 30 },
+        new intermissionMode { message  = "Intermission", timer = 10 },
+        new intermissionMode { message  = "Debater 2", timer = 30 },
+        new intermissionMode { message  = "Debate Conclusion", timer = 5 }
     };
 
     private List<Message> hiddenHistory;
@@ -52,11 +52,7 @@ public class debateManager : NetworkBehaviour
             }
             else // print history logs
             {
-                hiddenHistory = new List<Message> {
-                new Message { spectator = 1, text = "testing first line haha", timestamp = "00:05"},
-                new Message { spectator = 1, text = "testing second line haha", timestamp = "00:35"},
-                new Message { spectator = 2, text = "testing third line with second spectator haha", timestamp = "01:25"}
-                };
+                hiddenHistory = new List<Message> (historyLogs);
             }
 
             RpcAutomateCamera(mode == 2);

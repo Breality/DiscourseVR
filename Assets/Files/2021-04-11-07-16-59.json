@@ -1,0 +1,17 @@
+[
+{
+"sender" : 1,
+"timestamp" : 5,
+"message" : "testing first line haha"
+},
+{
+"sender" : 1,
+"timestamp" : 35,
+"message" : "testing second line haha"
+},
+{
+"sender" : 2,
+"timestamp" : 85,
+"message" : "testing third line with second spectator haha"
+}
+]
